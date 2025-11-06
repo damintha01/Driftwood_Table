@@ -37,6 +37,8 @@ if (!mongoUri) {
 app.use("/api/auth", authRoutes);
 
 
+
+
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
