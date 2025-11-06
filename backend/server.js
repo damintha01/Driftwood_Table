@@ -1,8 +1,9 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const dotenv = require('dotenv');
+import express from 'express';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -14,21 +15,27 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => {
-    console.log("MongoDB connected");
-})
-.catch((err) => {
-    console.error("MongoDB connection error:", err);
-});
+const mongoUri = process.env.MONGODB_URI;
+if (!mongoUri) {
+    console.error('MONGODB_URI is not set in environment. Set it in your .env or environment variables.');
+} else {
+    // Connect to MongoDB Atlas
+    mongoose.connect(mongoUri)
+    .then(() => {
+        console.log('MongoDB connected');
+    })
+    .catch((err) => {
+        // Provide a clearer, actionable message for common Atlas issues
+        console.error('MongoDB connection error:');
+        console.error(err && err.message ? err.message : err);
+        
+    });
+}
 
-// Sample Route
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
+
+
+app.use("/api/auth", authRoutes);
+
 
 // Start Server
 app.listen(PORT, () => {
