@@ -9,7 +9,7 @@ export const registerUser = async (req, res) => {
   try {
     console.log('Request body:', req.body); // Debug log
     
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
     
     // Validate required fields
     if (!username || !email || !password) {
@@ -27,9 +27,14 @@ export const registerUser = async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      role: role || "user", // Default to "user" if not specified
     });
 
-    res.json({ message: "User registered successfully", userId: newUser._id });
+    res.json({ 
+      message: "User registered successfully", 
+      userId: newUser._id,
+      role: newUser.role 
+    });
   } catch (error) {
     console.error('Registration error:', error); // Debug log
     res.status(500).json({ message: error.message });
@@ -67,11 +72,22 @@ export const loginUser = async (req, res) => {
       return res.status(500).json({ message: "Server configuration error" });
     }
 
-    // Generate JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
-    res.json({ message: "Login successful", token, username: user.username });
+    // Generate JWT token with user role
+    const token = jwt.sign(
+      { userId: user._id, role: user.role }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: "1d" }
+    );
+    
+    res.json({ 
+      message: "Login successful", 
+      token, 
+      username: user.username,
+      role: user.role 
+    });
   } catch (error) {
     console.error('Login error:', error); // Debug log
     res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };
+

@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from "./routes/authRoutes.js";
+import foodRoutes from "./routes/foodRoutes.js";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ if (!mongoUri) {
 
 
 app.use("/api/auth", authRoutes);
+app.use("/api/foods", foodRoutes);
 
 
 
