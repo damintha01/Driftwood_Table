@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(cors());
 
-// MongoDB Connection
+// MongoDB Connection................
 const mongoUri = process.env.MONGODB_URI;
 if (!mongoUri) {
     console.error('MONGODB_URI is not set in environment. Set it in your .env or environment variables.');
