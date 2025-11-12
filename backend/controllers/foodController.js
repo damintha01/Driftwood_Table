@@ -3,7 +3,11 @@ import Food from "../models/food.js";
 // @desc Add new food (Admin only)
 export const addFood = async (req, res) => {
   try {
-    const { name, description, price, category, imageUrl } = req.body;
+    const { name, description, price, category } = req.body;
+    
+    // Get image URL from uploaded file (works with any field name)
+    const imageUrl = req.files && req.files.length > 0 ? req.files[0].path : "";
+    
     const food = new Food({ name, description, price, category, imageUrl });
     await food.save();
     res.status(201).json({ message: "Food added successfully", food });
@@ -36,7 +40,14 @@ export const getFoodById = async (req, res) => {
 // @desc Update food (Admin only)
 export const updateFood = async (req, res) => {
   try {
-    const food = await Food.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updateData = { ...req.body };
+    
+    // If a new image is uploaded, update the imageUrl
+    if (req.files && req.files.length > 0) {
+      updateData.imageUrl = req.files[0].path;
+    }
+    
+    const food = await Food.findByIdAndUpdate(req.params.id, updateData, { new: true });
     if (!food) return res.status(404).json({ message: "Food not found" });
     res.status(200).json({ message: "Food updated", food });
   } catch (error) {
