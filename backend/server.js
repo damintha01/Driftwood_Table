@@ -5,10 +5,12 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from "./routes/authRoutes.js";
 import foodRoutes from "./routes/foodRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
-dotenv.config();
+dotenv.config(); 
 
 const app = express();
+
 const PORT = process.env.PORT || 5000;
 
 // Middleware
@@ -17,6 +19,7 @@ app.use(cors());
 
 // MongoDB Connection................
 const mongoUri = process.env.MONGODB_URI;
+
 if (!mongoUri) {
     console.error('MONGODB_URI is not set in environment. Set it in your .env or environment variables.');
 } else {
@@ -37,6 +40,8 @@ if (!mongoUri) {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/foods", foodRoutes);
+app.use("/api/orders", orderRoutes);
+
 
 
 
