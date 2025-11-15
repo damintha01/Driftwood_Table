@@ -54,7 +54,7 @@ export const loginUser = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ 
         message: "Email and password are required",
-        received: { email: !!email, password: !!password }
+
       });
     }
     
@@ -69,7 +69,7 @@ export const loginUser = async (req, res) => {
     // Check if JWT_SECRET exists
     if (!process.env.JWT_SECRET) {
       console.error('JWT_SECRET is not defined in environment variables');
-      return res.status(500).json({ message: "Server configuration error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
 
     // Generate JWT token with user role
