@@ -5,7 +5,7 @@ import {
   getUserOrders,
   updateOrderStatus
 } from "../controllers/orderController.js";
-import { verifyToken, verifyTokenAdmin } from "../middleware/authMiddleware.js";
+import { verifyToken, isAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.post("/", verifyToken, createOrder);
 router.get("/myorders", verifyToken, getUserOrders);
 
 // Admin routes
-router.get("/", verifyTokenAdmin, getAllOrders);
-router.put("/:id", verifyTokenAdmin, updateOrderStatus);
+router.get("/", isAdmin, getAllOrders);
+router.put("/:id", isAdmin, updateOrderStatus);
 
 export default router;
