@@ -10,7 +10,7 @@ import Navbar from './components/Navbar';
 const App = () => {
   return (
     <>
-       <div className="min-h-screen bg-gray-100">
+       <div className="min-h-screen bg-gray-200">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-6">
         <Routes>
